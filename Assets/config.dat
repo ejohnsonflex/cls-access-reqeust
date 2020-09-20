@@ -1,7 +1,12 @@
-﻿path = Assets/config.dat
-
-CLSID = YBS5ZZR2N8X5
+tenant = 13005
+uatProd = uat
+comEu = eu
+clsId = YBS5ZZR2N8X5
+hostID = ejohnson@revenera.com
+incrementa = false
+borrowInterval = 0
+partial = false
+count = 1
 feature = dsr
 version = 1.0
-hostID = ejohnson@revenera.com
-vendorDictionary = "Location":"London", "Date:" : "September 19", "Service Time": "13:039"
+vendorDictionary = "Location":"London", "Date:" : "September 18", "Service Time": "20:54
