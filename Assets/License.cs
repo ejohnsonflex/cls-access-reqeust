@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿//----------------------------------------------
+//  Accredetation
+//  LitJson Ruler
+// © 2015 yedo-factory
+//----------------------------------------------
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
@@ -9,7 +15,6 @@ namespace CMAPI
 {
     public class License : MonoBehaviour
     {
-        string[] data = ConfigManager.AccessRequestData();
         //string url = "https://flex13005-uat.compliance.flexnetoperations.eu/api/1.0/instances/YBS5ZZR2N8X5/authorize";
 
         [System.Serializable]
@@ -20,8 +25,8 @@ namespace CMAPI
 
             public HostId()
             {
-                this.type = "string";
-                this.value = ConfigManager.ReturnHostID();
+                type = "string";
+                value = ConfigManager.ReturnHostID();
             }
         }
 
@@ -34,9 +39,9 @@ namespace CMAPI
 
             public Feature()
             {
-                this.count = ConfigManager.ReturnCount();
-                this.name = ConfigManager.ReturnFeature();
-                this.version = ConfigManager.ReturnVersion();
+                count = ConfigManager.ReturnCount();
+                name = ConfigManager.ReturnFeature();
+                version = ConfigManager.ReturnVersion();
             }
         }
 
@@ -81,23 +86,61 @@ namespace CMAPI
                 }
 
                 Feature feature = new Feature();
-                this.features = new List<Feature>();
-                features.Add(feature);
-
+                features = new List<Feature>
+                {
+                    feature
+                };
             }
         }
 
-        private void GetAccessRequestData()
+        public void CmapiAccessRequest()
         {
-            data = ConfigManager.AccessRequestData();
+            // Connected to License Button and OnClick EventSystem / CmapiAccessRequest
+            StartCoroutine(AccessRequest());
+        }
 
+
+        IEnumerator AccessRequest()
+        {
+            string url = "https://flex13005-uat.compliance.flexnetoperations.eu/api/1.0/instances/0YBV7VG7HDL1/access_request";
+
+            string[] data = ConfigManager.AccessRequestData();
             AccessRequestBody accessRequestBody = new AccessRequestBody();
 
             string json = JsonConvert.SerializeObject(accessRequestBody);
-            //[JsonProperty]
+            var bodyRaw = Encoding.UTF8.GetBytes(json);
             Debug.Log(json);
-            //var bodyRaw = Encoding.UTF8.GetBytes(json);
+
+            UnityWebRequest request = new UnityWebRequest(url, "POST");
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            
+            string getByte = Encoding.ASCII.GetString(bodyRaw);
+            //Debug.Log(getByte);
+
+            request.downloadHandler = new DownloadHandlerBuffer();
+
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Authorization", "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicm9sZXMiOiJST0xFX0NBUEFCSUxJVFkifQ.C8K43qlPcD8GR5ZfhqsZkPfc_Srkcx9RYnF5gcSeIik6dT9yIFaWJrBTzo5Ar0Yj0jfFXp0XdoWi6dS2vATgl31aBFHC4hcOf_kz2aAzS7FuWEelIxauYWz2kfJxS5VPqwRlKLFd7V1rXFVcUbIqbUScN0tyyUkeNgXHDa2oM4fELhflqMlrLqvwJPmONNQAhhYhXX67JLRimV0jmmAG3MN48T3FsjBMUOJEU2kUwJSX-RjggfG39DuOKiXb7b68e2PevDmcwgjKh6CVSXp9bds3jGTraYe6iQKUFYhyGJHHhzdArXLiUrra0xuKlwN38aDp9qcJgMaFpi3oW7rmlw");
+
+            yield return request.SendWebRequest();
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Debug.Log(request.downloadHandler.text);
+            }
+
+            Debug.Log("Status Code: " + request.responseCode);
+            Debug.Log("Number of Bytes: " + request.downloadedBytes);
+            string results = request.downloadHandler.text;
+
+            //Credentials credentials = new Credentials();
+            //credentials = JsonConvert.DeserializeObject<Credentials>(results);
+
+            //Debug.Log("Token Expiration: " + credentials.expires);
+            //Debug.Log("Bearer Token: " + credentials.token); */
         }
+
+        
+
     }
 }
 

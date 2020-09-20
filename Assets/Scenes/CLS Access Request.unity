@@ -754,7 +754,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1044333748}
-        m_MethodName: GetAccessRequestData
+        m_MethodName: CmapiAccessRequest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

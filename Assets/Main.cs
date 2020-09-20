@@ -9,13 +9,11 @@ public class Main : MonoBehaviour
     void Start()
     {
         Debug.Log("Started");
-        //CMAPI.FileLoader.CLSData.Parse();
-        //CMAPI.FileLoader.CLSData.Assign();
         CMAPI.ConfigManager.ReadConfigData();
         CMAPI.ConfigManager.ParseConfiData();
         CMAPI.ConfigManager.Assign();
         CMAPI.ConfigManager.AccessRequestData();
-
+      
         clsURL.text += @"https\";
     }
 

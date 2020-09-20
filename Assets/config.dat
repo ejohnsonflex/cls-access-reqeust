@@ -1,8 +1,8 @@
 tenant = 13005
 uatProd = uat
 comEu = eu
-clsId = YBS5ZZR2N8X5
-hostID = ejohnson@revenera.com
+clsId = 0YBV7VG7HDL1
+hostID = wmelby@revenera.com
 incrementa = false
 borrowInterval = 0
 partial = false

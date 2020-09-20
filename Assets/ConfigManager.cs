@@ -65,10 +65,10 @@ namespace CMAPI
 
             parsedConfigLines = list.ToArray();
 
-            foreach (string line in parsedConfigLines)
+            /*foreach (string line in parsedConfigLines)
             {
                 Debug.Log(line);
-            }
+            }*/
         }
 
         public static void Assign()
