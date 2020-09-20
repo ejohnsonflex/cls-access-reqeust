@@ -37,8 +37,10 @@ namespace CMAPI
         public class CmapiResponse
         {
             public RequestHostId requestHostId = new RequestHostId();
-            public List<Feature> features = new List<Feature>();
-            public List<StatusList> statuses = new List<StatusList>();
+            [SerializeField]
+            public List<Feature> featureList = new List<Feature>();
+            [SerializeField]
+            public List<StatusList> statusList = new List<StatusList>();
         }
     }
 }

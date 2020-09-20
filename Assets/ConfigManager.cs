@@ -18,13 +18,15 @@ namespace CMAPI
         private static string incremental;
         private static string borrowInterval;
         private static string partial;
-        private static string feature;
-        private static string version;
-        private static string count;
+        private static string[] features;
+        private static string[] versions;
+        private static string[] counts;
         private static string vendorDictionary;
+        private static string bearerToken;
 
         private static string[] configLines = { };
         private static string[] parsedConfigLines = { };
+        private static string[] countsParse, featuresParse, versionsParse = { };
 
         ConfigManager()
         {
@@ -71,6 +73,13 @@ namespace CMAPI
             }*/
         }
 
+        public static void ParseMultipleFeatures()
+        {
+            countsParse = parsedConfigLines[8].Split(',');
+            featuresParse = parsedConfigLines[9].Split(',');
+            versionsParse = parsedConfigLines[10].Split(',');
+        }
+
         public static void Assign()
         {
             tenant = parsedConfigLines[0];
@@ -81,10 +90,11 @@ namespace CMAPI
             incremental = parsedConfigLines[5];
             borrowInterval = parsedConfigLines[6];
             partial = parsedConfigLines[7];
-            count = parsedConfigLines[8];
-            feature = parsedConfigLines[9];
-            version = parsedConfigLines[10];
+            counts = countsParse;
+            features = featuresParse;
+            versions = versionsParse;
             vendorDictionary = parsedConfigLines[11];
+            bearerToken = parsedConfigLines[12];
 
             /*foreach (var line in configLines)
             {
@@ -116,19 +126,60 @@ namespace CMAPI
             return partial;
         }
 
-        public static int ReturnCount()
+        public static int NumFeatures()
         {
-            return Convert.ToInt32(count);
+            return countsParse.Length;
         }
 
-        public static string ReturnFeature()
+        public static int[] ReturnCounts()
         {
-            return feature;
+
+            List<int> list = new List<int>();
+            int[] counts;
+
+            foreach (var line in countsParse)
+            {
+                list.Add(Convert.ToInt32(line));
+            }
+
+            counts = list.ToArray();
+
+            return counts;
         }
 
-        public static string ReturnVersion()
+        public static string[] ReturnFeatures()
         {
-            return version;
+            List<string> list = new List<string>();
+            string[] features;
+
+            foreach (var line in featuresParse)
+            {
+                list.Add(line);
+            }
+
+            features = list.ToArray();
+
+            return features;
+        }
+
+        public static string[] ReturnVersions()
+        {
+            List<string> list = new List<string>();
+            string[] versions;
+
+            foreach (var line in versionsParse)
+            {
+                list.Add(line);
+            }
+
+            versions = list.ToArray();
+
+            return versions;
+        }
+
+        public static string ReturnBearerToken()
+        {
+            return bearerToken;
         }
     }
 }

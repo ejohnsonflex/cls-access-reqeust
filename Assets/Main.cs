@@ -8,12 +8,13 @@ public class Main : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Started");
         CMAPI.ConfigManager.ReadConfigData();
         CMAPI.ConfigManager.ParseConfigData();
+        CMAPI.ConfigManager.ParseMultipleFeatures();
         CMAPI.ConfigManager.Assign();
       
-        clsURL.text += @"https\";
+        //clsURL.text += @"https:\\";
+        clsURL.text += @"https:\";
     }
 
     // Update is called once per frame
