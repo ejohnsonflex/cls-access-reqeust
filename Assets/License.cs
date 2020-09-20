@@ -20,76 +20,56 @@ namespace CMAPI
         [System.Serializable]
         public class HostId
         {
-            public string type;
-            public string value;
-
-            public HostId()
-            {
-                type = "string";
-                value = ConfigManager.ReturnHostID();
-            }
+            public string type = "string";
+            public string value = ConfigManager.ReturnHostID();
         }
 
         [System.Serializable]
         public class Feature
         {
-            public int count;
-            public string name;
-            public string version;
+            public int count = ConfigManager.ReturnCount();
+            public string name = ConfigManager.ReturnFeature();
+            public string version = ConfigManager.ReturnVersion();
 
-            public Feature()
-            {
-                count = ConfigManager.ReturnCount();
-                name = ConfigManager.ReturnFeature();
-                version = ConfigManager.ReturnVersion();
-            }
         }
 
         [System.Serializable]
         public class AccessRequestBody
         {
-            public HostId hostId;
-            public bool incremental;
-            [JsonProperty("borrow-interval")]
-            public string borrow_interval;
-            public bool partial;
-            public List<Feature> features;
+            public HostId hostId = new HostId();
+            public bool incremental = true;
+            [JsonProperty("borrow-interval")]   // Decorator 
+            public string borrow_interval = ConfigManager.ReturnBorrowInterval();
+            public bool partial = true;
+            public List<Feature> features = new List<Feature>();
 
             public AccessRequestBody()
             {
-                this.hostId = new HostId();
-
                 string incremental = ConfigManager.ReturnIncremental();
+                string partial = ConfigManager.ReturnPartial();
 
-                if (ConfigManager.ReturnIncremental() == "false")
-                {
-                    this.incremental = false;
-                }
-
-                else
+                if (ConfigManager.ReturnIncremental() != "false")
                 {
                     this.incremental = true;
                 }
 
-                this.borrow_interval = ConfigManager.ReturnBorrowInterval();
-
-                string partial = ConfigManager.ReturnPartial();
-
-                if (ConfigManager.ReturnPartial() == "false")
+                else
                 {
-                    this.partial = false;
+                    this.incremental = false;
                 }
 
-                else
+                if (ConfigManager.ReturnPartial() != "false")
                 {
                     this.partial = true;
                 }
 
-                Feature feature = new Feature();
-                features = new List<Feature>
+                else
                 {
-                    feature
-                };
+                    this.partial = false;
+                }
+
+                Feature feature = new Feature();
+                features.Add(feature);
             }
         }
 
@@ -104,12 +84,12 @@ namespace CMAPI
         {
             string url = "https://flex13005-uat.compliance.flexnetoperations.eu/api/1.0/instances/0YBV7VG7HDL1/access_request";
 
-            string[] data = ConfigManager.AccessRequestData();
+            //string[] data = ConfigManager.AccessRequestData();
             AccessRequestBody accessRequestBody = new AccessRequestBody();
 
             string json = JsonConvert.SerializeObject(accessRequestBody);
-            var bodyRaw = Encoding.UTF8.GetBytes(json);
-            Debug.Log(json);
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+            //Debug.Log(json);
 
             UnityWebRequest request = new UnityWebRequest(url, "POST");
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -130,17 +110,16 @@ namespace CMAPI
 
             Debug.Log("Status Code: " + request.responseCode);
             Debug.Log("Number of Bytes: " + request.downloadedBytes);
+
             string results = request.downloadHandler.text;
 
-            //Credentials credentials = new Credentials();
-            //credentials = JsonConvert.DeserializeObject<Credentials>(results);
+            ResponseBody.CmapiResponse cmapiResponse = new ResponseBody.CmapiResponse();
+            cmapiResponse = JsonConvert.DeserializeObject<ResponseBody.CmapiResponse>(results);
 
-            //Debug.Log("Token Expiration: " + credentials.expires);
-            //Debug.Log("Bearer Token: " + credentials.token); */
+            Debug.Log("HostId: " + cmapiResponse.requestHostId.value);
+            Debug.Log("Expiration: " + cmapiResponse.features[0].expires);
+            Debug.Log("Vendor String: " + cmapiResponse.features[0].vendorString);
         }
-
-        
-
     }
 }
 

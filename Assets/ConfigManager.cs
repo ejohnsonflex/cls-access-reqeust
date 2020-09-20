@@ -53,7 +53,7 @@ namespace CMAPI
             }
         }
 
-        public static void ParseConfiData()
+        public static void ParseConfigData()
         {
             List<string> list = new List<string>();
 
@@ -129,13 +129,6 @@ namespace CMAPI
         public static string ReturnVersion()
         {
             return version;
-        }
-
-        public static string[] AccessRequestData()
-        {
-            string[] data = { count, feature, version, hostId, vendorDictionary };
-            return data;
-            
         }
     }
 }

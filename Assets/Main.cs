@@ -10,9 +10,8 @@ public class Main : MonoBehaviour
     {
         Debug.Log("Started");
         CMAPI.ConfigManager.ReadConfigData();
-        CMAPI.ConfigManager.ParseConfiData();
+        CMAPI.ConfigManager.ParseConfigData();
         CMAPI.ConfigManager.Assign();
-        CMAPI.ConfigManager.AccessRequestData();
       
         clsURL.text += @"https\";
     }
