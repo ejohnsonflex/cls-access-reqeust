@@ -1,9 +1,9 @@
 tenant = 13005
-uatProd = uat
-comEu = eu
+uat = true
+domain = eu
 clsId = 0YBV7VG7HDL1
-hostID = jberthold@revenera.com
-incrementa = false
+hostID = ejohnson@revenera.com
+incremental = false
 borrowInterval = 0
 partial = false
 count = 1, 1

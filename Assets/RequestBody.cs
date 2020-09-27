@@ -32,6 +32,7 @@ namespace CMAPI
             [JsonProperty("borrow-interval")]   // Decorator 
             public string borrow_interval = ConfigManager.ReturnBorrowInterval();
             public bool partial = true;
+            [SerializeField]
             public List<Feature> features = new List<Feature>();
 
             public AccessRequestBody()

@@ -8,7 +8,7 @@ namespace CMAPI
 {
     public class ConfigManager
     {
-        private const string path = @"Assets/config.dat";
+        
 
         private static string tenant;
         private static string uatProd;
@@ -33,27 +33,7 @@ namespace CMAPI
             var cLSData = new ConfigManager();
         }
 
-        public static void ReadConfigData()
-        {
-            try
-            {
-                configLines = File.ReadAllLines(path);
-
-                /*foreach (var line in lineData)
-                {
-                    // skip over empty lines in config.dat
-                    if (!(string.IsNullOrEmpty(configLines.ToString())))
-                    {
-                        Debug.Log(configLines.ToString());
-                    }
-                }*/
-            }
-
-            catch (Exception e)
-            {
-                Debug.Log(e.Message.ToString());
-            }
-        }
+        
 
         public static void ParseConfigData()
         {
