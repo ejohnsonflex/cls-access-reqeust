@@ -42,8 +42,6 @@ namespace ConfigDat
                     //}
                 }
 
-               
-
             }
 
             catch (FileNotFoundException)

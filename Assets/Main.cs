@@ -18,9 +18,11 @@ public class Main : MonoBehaviour
 
         else
         {
-            clsURLText.text = CMAPI.CLSURL.ClsURl.Url();
-            List<string> configData = GetConfigData();
 
+            clsURLText.text = CMAPI.CLSURL.ClsURl.Url();
+            //List<string> configData = GetConfigData();
+
+            /*
             //PreviewRequest.PreviewRequestTest();
 
             List<string> array = new List<string>();
@@ -34,14 +36,14 @@ public class Main : MonoBehaviour
             pR.features.Add(f2);
 
             string jsonStr = JsonConvert.SerializeObject(pR);
-            Debug.Log(jsonStr);
+            Debug.Log(jsonStr);*/
         }
     }
 
-    private static List<string> GetConfigData()
-    {
-        return ConfigDat.ConfigDatReader.ConfigDatLines();
-    }
+    //private static List<string> GetConfigData()
+    //{
+    //    return ConfigDat.ConfigDatReader.ConfigDatLines();
+    //}
 
     // Update is called once per frame
     void Update()

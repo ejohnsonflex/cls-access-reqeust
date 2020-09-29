@@ -1,9 +1,9 @@
 tenant = 13005
 uat = true
 domain = eu
-clsId = 0YBV7VG7HDL1
+clsId = YLR8N2Y7DQS1
 hostType = string
-hostID = ejohnson@revenera.com
+hostID = jdoe@revenera.com
 incremental = false
 borrowInterval = 0
 partial = false

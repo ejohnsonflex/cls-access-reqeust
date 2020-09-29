@@ -14,6 +14,7 @@ public class SelectorsDictionary
     public SelectorsDictionary(List<string> strings)
     {
         string[] array = strings.ToArray();
+        Debug.Log("Array Count: " + strings.Count);
 
         for (int i = 0; i < strings.Count; i++)
         {
