@@ -4,7 +4,7 @@ namespace CMAPI
 {
     public class Quit : MonoBehaviour
     {
-        private void OnApplicationQuit()
+        public void OnApplicationQuit()
         {
             Application.Quit();
         }

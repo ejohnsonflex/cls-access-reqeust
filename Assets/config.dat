@@ -2,6 +2,7 @@ tenant = 13005
 uat = true
 domain = eu
 clsId = 0YBV7VG7HDL1
+hostType = string
 hostID = ejohnson@revenera.com
 incremental = false
 borrowInterval = 0

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace CMAPI.CLSURL
 {
@@ -95,12 +93,12 @@ namespace CMAPI.CLSURL
         {
             string url;
 
-            ParseConfigDat(Config.Dat.ConfigDatReader.ConfigDatLines());
+            ParseConfigDat(ConfigDat.ConfigDatReader.ConfigDatLines());
             AssignClsConfigDat();
             FormatUatAndDomain();
 
             //https://flex13005-uat.compliance.flexnetoperations.eu/api/1.0/instances/{{CLSIDFLEX}}/access_request
-            url = @"https://flex" + _tenant + _uatProd + ".compliance.flexnetoperations." + _domain + "/api/1.0/instances/" + _clsId + "/access_request";
+            url = @"https://flex" + _tenant + _uatProd + ".compliance.flexnetoperations." + _domain + "/api/1.0/instances/" + _clsId;
 
             return url;
         }    

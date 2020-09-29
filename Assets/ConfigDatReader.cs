@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CMAPI.Config.Dat
+namespace ConfigDat
 {
     public class ConfigDatReader : MonoBehaviour
     {
@@ -80,7 +80,6 @@ namespace CMAPI.Config.Dat
         {
             return _configDatLines;
         }
-
     }
 }
 
