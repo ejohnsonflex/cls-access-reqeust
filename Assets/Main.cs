@@ -18,24 +18,24 @@ public class Main : MonoBehaviour
 
         else
         {
-            //Debug.Log(CMAPI.CLSURL.ClsURl.Url());
             clsURLText.text = CMAPI.CLSURL.ClsURl.Url();
             List<string> configData = GetConfigData();
 
             //PreviewRequest.PreviewRequestTest();
-            var pR = new PreviewRequest("string", "ejohnson@revenera.com");
-            var f = new Feature(1, "dsr", "1.0");
-            pR.features.Add(f);
+
+            List<string> array = new List<string>();
+            array.Add("ANY");                                                           // implement
+            array.Add("EMEA");                                                          // implement
+
+            var pR = new PreviewRequest("string", "ejohnson@revenera.com", array);      // implement
+            var f1 = new Feature(1, "dsr", "1.0");                                      // implement
+            var f2 = new Feature(1, "dsr.advanced", "1.0");                             // implement
+            pR.features.Add(f1);
+            pR.features.Add(f2);
 
             string jsonStr = JsonConvert.SerializeObject(pR);
             Debug.Log(jsonStr);
         }
-
-        //CMAPI.ConfigManager.ReadConfigData();
-        //CMAPI.ConfigManager.ParseConfigData();
-        //CMAPI.ConfigManager.ParseMultipleFeatures();
-        //CMAPI.ConfigManager.Assign();
-
     }
 
     private static List<string> GetConfigData()
