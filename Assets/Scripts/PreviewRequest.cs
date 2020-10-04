@@ -11,11 +11,11 @@ public class PreviewRequest
     [JsonProperty("selectorsDictionary", NullValueHandling = NullValueHandling.Ignore )]
     public SelectorsDictionary SelectorsDictionary { get; set; }
 
-    public PreviewRequest(string s1, string s2, List<string> strings) : this()
+    /*public PreviewRequest(string s1, string s2, List<string> strings) : this()
     {
         HostId = new HostId(s1, s2);                                                    // implement
         SelectorsDictionary = new SelectorsDictionary(strings);                         // implement
-    }
+    }*/
 
     public PreviewRequest()
     {

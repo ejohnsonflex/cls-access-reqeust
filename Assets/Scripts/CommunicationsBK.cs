@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 //public class ServerCommunications : MonoBehaviour
-public class Communications : MonoBehaviour
+public class CommunicationsBK : MonoBehaviour
 {
     private const string Name = "Authorization";
-    //private Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
 
     //private string _jsonResponse = string.Empty;
     public static string JSON { get; set; }
@@ -16,7 +15,6 @@ public class Communications : MonoBehaviour
     {
         using (UnityWebRequest request = UnityWebRequest.Post(uri, jsonString))
         {
-           
             Debug.Log(uri);
             Debug.Log(jsonString);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonString);
@@ -39,17 +37,20 @@ public class Communications : MonoBehaviour
 
             else
             {
-                Debug.Log("HERE");
+                //Debug.Log("HERE");
                 callback(request.downloadHandler.text);
             }
         }
     }
 
-    public static void PreviewRequestSend(Communications comms)
+    public static void PreviewRequestSend()
     {
+        
         string uri = ConfigDat.URL + "/preview_request";
         string jsonString = new PreviewRequest().SerializePreviewRequest(new PreviewRequest());
-        
-        comms.StartCoroutine(NetworkManager(uri, jsonString, (value) => { JSON = value; Debug.Log(JSON); }));
+        CommunicationsBK communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<CommunicationsBK>();
+
+        communicationsScript.StartCoroutine(NetworkManager(uri, jsonString, (value) => { JSON = value; Debug.Log(JSON); }));
+        //communicationsScript.StartCoroutine(NetworkManager(uri, jsonString, (value) => { JSON = value; }));
     }
 }

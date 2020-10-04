@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -10,27 +11,28 @@ public class Main : MonoBehaviour
 
     void Start()
     {
-        ConfigDat.ConfigStart();
-
         Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
 
-        // thought to make a UWR, pass it to PreviewRequestSend and check uWR.isDone
-        //UnityWebRequest uWR
+        ConfigDat.ConfigStart();
+        Communications.PreviewRequestSend(communicationsScript);
 
-        communicationsScript.PreviewRequestSend();
-
+        StartCoroutine(PreviewRequestUpdate(communicationsScript));
     }
 
     void Update()
     {
-        //Communications comms = new Communications();
-        //StartCoroutine(comms.PreviewRequestSend
+        
     }
+
+    IEnumerator PreviewRequestUpdate(Communications communicationsScript)
+    {
+
+        while (true)
+        {
+            Communications.PreviewRequestSend(communicationsScript);
+            yield return new WaitForSeconds(10);
+        }
+
+    }
+
 }
-
-    /*if (string.IsNullOrEmpty(communicationsScript.JSON))
-       {
-           Debug.Log("It's null");
-       }
-
-       Display.ShowPreviewResponse(communicationsScript.GetJsonPreviewResponse());*/
