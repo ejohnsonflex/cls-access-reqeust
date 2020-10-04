@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class PreviewRequest
 {
-    public HostId HostId { get; private set; }
-    public List<Feature> Features { get; private set; }
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("hostId")]
+    public HostId HostId { get; set; }
+    [JsonProperty("features", NullValueHandling = NullValueHandling.Ignore)]
+    public List<Feature> Features { get; set; }
+    [JsonProperty("selectorsDictionary", NullValueHandling = NullValueHandling.Ignore )]
     public SelectorsDictionary SelectorsDictionary { get; set; }
 
     public PreviewRequest(string s1, string s2, List<string> strings) : this()
@@ -17,7 +19,16 @@ public class PreviewRequest
 
     public PreviewRequest()
     {
-        Features = new List<Feature>();
+        HostId = new HostId
+        {
+            Type = ConfigDat.HostType,
+            Value = ConfigDat.HostId
+        };
+    }
+
+    public string SerializePreviewRequest(PreviewRequest pR)
+    {
+        return JsonConvert.SerializeObject(pR);
     }
 }
 

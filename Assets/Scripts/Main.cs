@@ -1,43 +1,36 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
-    [SerializeField] Text clsURLText = null;
     private const string path = @"Assets/config.dat";
 
-    // Start is called before the first frame update
     void Start()
     {
+        ConfigDat.ConfigStart();
 
-        var config = new ConfigDat();
+        Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
 
-        /*if (!ConfigDat.ReadConfigData(path))
-        {
-            clsURLText.text = "Error reading config.dat"; 
-        }
+        // thought to make a UWR, pass it to PreviewRequestSend and check uWR.isDone
+        //UnityWebRequest uWR
 
-        else
-        {
+        communicationsScript.PreviewRequestSend();
 
-            clsURLText.text = CLSURL.ClsURl.Url();
-
-            List<string> array = new List<string>();
-            array.Add("ANY");                                                           // implement
-            array.Add("EMEA");                                                          // implement
-
-            var pR = new PreviewRequest("string", "ejohnson@revenera.com", array);      // implement
-            var f1 = new FeatureRequest(1, "dsr", "1.0");                                      // implement
-            var f2 = new FeatureRequest(1, "dsr.advanced", "1.0");                             // implement
-            pR.features.Add(f1);
-            pR.features.Add(f2);
-        }*/
     }
 
     void Update()
     {
-
+        //Communications comms = new Communications();
+        //StartCoroutine(comms.PreviewRequestSend
     }
 }
+
+    /*if (string.IsNullOrEmpty(communicationsScript.JSON))
+       {
+           Debug.Log("It's null");
+       }
+
+       Display.ShowPreviewResponse(communicationsScript.GetJsonPreviewResponse());*/

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - ClsUrlText
+  - AppPanel
+  - Display
   layers:
   - Default
   - TransparentFX

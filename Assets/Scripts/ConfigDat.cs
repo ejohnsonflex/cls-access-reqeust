@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class ConfigDat
 {
     [SerializeField]
-    private Text _clsUrlText = null;
     Text text = GameObject.FindGameObjectWithTag("ClsUrlText").GetComponent<Text>();
     Color red = new Color(.9f, .3f, .3f);
 
@@ -21,10 +20,10 @@ public class ConfigDat
     public string Tenant { get; set; }
     public string UatProd { get; set; }
     public string Domain { get; set; }
-    public string ClsId { get; set; }
+    public static string ClsId { get; set; }
 
-    public string HostType { get; set; }
-    public string HostId { get; set; }
+    public static string HostType { get; set; }
+    public static string HostId { get; set; }
 
     public string Incremental { get; set; }
     public string BorrowInterval { get; set; }
@@ -32,33 +31,72 @@ public class ConfigDat
 
     public List<Feature> Features { get; set; }
 
-    public IList<string> VendorDictionary { get; set; }
-    public IList<string> SelectorDicionary { get; set; }
+    public VendorDictionary VendorDictionary { get; set; }
+    public SelectorsDictionary SelectorDicionary { get; set; }
 
-    public string BearerToken { get; set; }
+    public static string BearerToken { get; set; }
+
+    public static string URL { get; set; }
 
     public ConfigDat()
     {
         if (!OpenFile(path))
         {
-            text.color = red;
-            text.text = "Error: Something blew up";
+            //text.color = red;
+            //text.text = "Error: Somethin' bad done blew up..";
         }
 
         else
         {
             Tenant = configDatRightParseList[0];
-            UatProd = configDatRightParseList[1];
+
+            if (!string.IsNullOrEmpty(configDatRightParseList[1]))
+            {
+                UatProd = configDatRightParseList[1];
+
+                if (UatProd.Equals("uat"))
+                {
+                    UatProd = "-uat";
+                }
+
+            }
+
             Domain = configDatRightParseList[2];
             ClsId = configDatRightParseList[3];
-            HostId = configDatRightParseList[4];
-            HostId = configDatRightParseList[5];
+            HostType = configDatRightParseList[4];
+
+
+            if (!string.IsNullOrEmpty(configDatRightParseList[5]))
+            {
+                HostId = configDatRightParseList[5];
+            }
+
+            else
+            {
+                text.color = red;
+                text.text = "Error: No hostId supplied in config.dat";
+            }
+
             Incremental = configDatRightParseList[6];
             BorrowInterval = configDatRightParseList[7];
             Partial = configDatRightParseList[8];
             Features = new List<Feature>(ParseFeatureDat());
 
-            BearerToken = configDatRightParseList[14];
+            //VendorDictionary = new VendorDictionary(ParseVendorDictionaryDat());
+            //Debug.Log(VendorDictionary.JOBS);
+
+            if (!string.IsNullOrEmpty(configDatRightParseList[15]))
+            {
+                BearerToken = configDatRightParseList[15];
+            }
+
+            else
+            {
+                text.color = red;
+                text.text = "Error: No Bearer Token supplied in config.dat";
+            }
+
+            URL = ("https://flex" + Tenant + UatProd + ".compliance.flexnetoperations." + Domain + "/api/1.0/instances/" + ClsId);
         }
     }
 
@@ -76,6 +114,7 @@ public class ConfigDat
                 ReadConfigData();
                 ParseConfigDat();
                 ParseFeatureDat();
+                ParseVendorDictionaryDat();
 
                 return true;
             }
@@ -118,6 +157,11 @@ public class ConfigDat
         }
     }
 
+    public static string ClsUrl ()
+    {
+        return "blah";
+    }
+
     private List<Feature> ParseFeatureDat()
     {
         string[] counts = configDatRightParseList[9].Split(new string[] { "," }, StringSplitOptions.None);
@@ -138,5 +182,30 @@ public class ConfigDat
         }
 
         return fl;
+    }
+
+    private int ParseVendorDictionaryDat()
+    {
+        string[] vdIntsArray = configDatRightParseList[12].Split(new string[] { "=" }, StringSplitOptions.None);
+        string[] vdStringsArray = configDatRightParseList[13].Split(new string[] { "=" }, StringSplitOptions.None);
+
+        string[] vdBitPairs = { };
+        int num = 0;
+        //VendorDictionary vd = new VendorDictionary();
+
+        for (int i = 0; i < vdIntsArray.Length; i++)
+        {
+            vdBitPairs = vdIntsArray[i].Split(new string[] { ":" }, StringSplitOptions.None);
+            num = Convert.ToInt32(vdBitPairs[1]);
+
+            //VendorDictionary.JOBS = num;
+        }
+
+        return num;
+    }
+
+    public static void ConfigStart()
+    {
+        var configDat = new ConfigDat();
     }
 }
