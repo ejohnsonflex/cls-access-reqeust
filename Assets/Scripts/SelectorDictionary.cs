@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 
+// Modifying JSON
+// https://www.newtonsoft.com/json/help/html/ModifyJson.htm
+
 [System.Serializable]
 public class SelectorsDictionary
 {
+    //[JsonProperty(ConfigDat.SelectorDicionary., NullValueHandling = NullValueHandling.Ignore)]
+    public string SelectorKey1 { get; private set; }
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string ROLE { get; private set; }
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string REGION { get; private set; }
+    public string SelectorKey2 { get; private set; }
 
     public SelectorsDictionary(List<string> strings)
     {
@@ -20,12 +23,14 @@ public class SelectorsDictionary
         {
             if (array[i] != null && array[i] == "ANY")
             {
-                ROLE = array[i];
+                //ROLE = array[i];
+                SelectorKey1 = array[i];
             }
 
             else if (array[i] != null && array[i] == "EMEA")
             {
-                REGION = array[i];
+                //REGION = array[i];
+                SelectorKey1 = array[i];
             }
 
             else

@@ -6,22 +6,28 @@ using UnityEngine.Networking;
 //public class ServerCommunications : MonoBehaviour
 public class Communications : MonoBehaviour
 {
+    public static string URI { get; set; }
+    public static string JsonPreviewRequest { get; set; }
+    public static string JsonPreviewResponse { get; set; }
+    public static string myString;
+
     private const string Name = "Authorization";
-    //private Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
 
-    //private string _jsonResponse = string.Empty;
-    public static string JSON { get; set; }
-
-    public static IEnumerator NetworkManager(string uri, string jsonString, System.Action<string> callback)
+    public Communications()
     {
-        using (UnityWebRequest request = UnityWebRequest.Post(uri, jsonString))
-        {
-           
-            Debug.Log(uri);
-            Debug.Log(jsonString);
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonString);
-            Debug.Log("Number of Byes in Request: " + System.Text.ASCIIEncoding.ASCII.GetByteCount(jsonString));
+        URI = ConfigDat.URL + "/preview_request";
+        JsonPreviewRequest = new PreviewRequest().SerializePreviewRequest(new PreviewRequest());
+    }
 
+    public static IEnumerator NetworkManager(string URI, System.Action<UnityWebRequest> callback)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Post(URI, JsonPreviewRequest))
+        {
+            //Debug.Log($"{URI}");
+            //Debug.Log($"{JsonPreviewRequest}");
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonPreviewRequest);
+            //Debug.Log("Number of Byes in Request: "  + $"{System.Text.ASCIIEncoding.ASCII.GetByteCount(JsonPreviewRequest)}");
+          
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             string getByte = Encoding.ASCII.GetString(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
@@ -31,25 +37,33 @@ public class Communications : MonoBehaviour
 
             // Send the request and wait for a response
             yield return request.SendWebRequest();
-
-            if (request.isNetworkError || request.isHttpError)
-            {
-                Debug.LogError("No response from CLS or network error");
-            }
-
-            else
-            {
-                Debug.Log("HERE");
-                callback(request.downloadHandler.text);
-            }
+            callback(request);
         }
     }
 
     public static void PreviewRequestSend(Communications comms)
     {
-        string uri = ConfigDat.URL + "/preview_request";
-        string jsonString = new PreviewRequest().SerializePreviewRequest(new PreviewRequest());
-        
-        comms.StartCoroutine(NetworkManager(uri, jsonString, (value) => { JSON = value; Debug.Log(JSON); }));
+        comms.StartCoroutine(NetworkManager(URI, (UnityWebRequest req) =>
+        {
+            if (req.isNetworkError || req.isHttpError)
+            {
+                Debug.Log($"{req.error}: {req.downloadHandler.text}");
+            }
+
+            else
+            {
+                JsonPreviewResponse = req.downloadHandler.text;
+
+                PreviewResponse previewresponse = PreviewResponse.DeserializePreviewResponse(JsonPreviewResponse);
+
+                int featureCount = previewresponse.Features.Count;
+
+                foreach (var feature in previewresponse.Features)
+                {
+                    Debug.Log("Feature: " + $"{feature.name}" + "\t\tAvailable: " + $"{feature.count}" + "\t\tTotal: " + $"{feature.maxCount}" + "\t\tExpiration: " + $"{feature.expires.ToLongDateString()}");
+                }
+                
+            }
+        }));
     }
 }

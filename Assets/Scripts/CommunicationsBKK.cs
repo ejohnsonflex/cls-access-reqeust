@@ -26,7 +26,7 @@ public class CommunicationsBKK : MonoBehaviour
         else if (uWR.isDone)
         {
             var previewResponse = new PreviewResponse();
-            previewResponse.DeserializePreviewResponse(uWR.downloadHandler.text);
+            /*previewResponse.DeserializePreviewResponse(uWR.downloadHandler.text);*/
 
             //JSON = uWR.downloadHandler.text;
             //yield break;

@@ -20,14 +20,16 @@ public class PreviewResponse
         StatusList = new List<StatusList>();
     }
 
-    public void DeserializePreviewResponse(string jsonString)
+    public static PreviewResponse DeserializePreviewResponse(string jsonString)
     {
         Text text = GameObject.FindGameObjectWithTag("Display").GetComponent<Text>();
 
         var previewResponse = new PreviewResponse();
         previewResponse = JsonConvert.DeserializeObject<PreviewResponse>(jsonString);
 
-        int featureCount = previewResponse.Features.Count;
+        return previewResponse;
+
+        /*int featureCount = previewResponse.Features.Count;
         int statusListCount = previewResponse.StatusList.Count;
 
         Debug.Log("Feature Count: " + featureCount);
@@ -39,6 +41,6 @@ public class PreviewResponse
         {
             text.text += ("Feature: " + previewResponse.Features[i].name + "\t\t\tAvailable: " + previewResponse.Features[i].count + "\t\tTotal: " + previewResponse.Features[i].maxCount + "\t\tExpiration: " + previewResponse.Features[i].expires.ToLongDateString());
 
-        }
+        }*/
     }
 }

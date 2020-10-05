@@ -11,26 +11,35 @@ public class Main : MonoBehaviour
 
     void Start()
     {
-        Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
-
         ConfigDat.ConfigStart();
-        Communications.PreviewRequestSend(communicationsScript);
+
+        Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
+        //StartCoroutine(Communications.SetJson());
+
+        //Communications.PreviewRequestSend(communicationsScript);
 
         StartCoroutine(PreviewRequestUpdate(communicationsScript));
-    }
 
-    void Update()
-    {
-        
+        //Debug.Log(Communications.JsonPreviewResponse);
     }
 
     IEnumerator PreviewRequestUpdate(Communications communicationsScript)
     {
-
         while (true)
         {
             Communications.PreviewRequestSend(communicationsScript);
             yield return new WaitForSeconds(10);
+
+            string temp = Communications.JsonPreviewResponse;
+            if (string.IsNullOrEmpty(temp))
+            {
+
+            }
+
+            else
+            {
+               Debug.Log($"{temp}");
+            }
         }
 
     }

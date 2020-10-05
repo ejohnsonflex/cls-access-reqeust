@@ -32,7 +32,7 @@ public class ConfigDat
     public List<Feature> Features { get; set; }
 
     public VendorDictionary VendorDictionary { get; set; }
-    public SelectorsDictionary SelectorDicionary { get; set; }
+    public static SelectorsDictionary SelectorDicionary { get; set; }
 
     public static string BearerToken { get; set; }
 
