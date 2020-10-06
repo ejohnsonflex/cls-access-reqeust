@@ -8,9 +8,6 @@ public class Communications : MonoBehaviour
 {
     public static string URI { get; set; }
     public static string JsonPreviewRequest { get; set; }
-    public static string JsonPreviewResponse { get; set; }
-    public static string myString;
-
     private const string Name = "Authorization";
 
     public Communications()
@@ -52,17 +49,21 @@ public class Communications : MonoBehaviour
 
             else
             {
-                JsonPreviewResponse = req.downloadHandler.text;
+                PreviewResponseDisplay.JsonPreviewResponse = req.downloadHandler.text;
+                PreviewResponseDisplay.PreviewResponseBytes = Encoding.ASCII.GetByteCount(req.downloadHandler.text);
 
-                PreviewResponse previewresponse = PreviewResponse.DeserializePreviewResponse(JsonPreviewResponse);
+                //int num = DisplayPreviewResponse.PreviewResponseBytes = Encoding.ASCII.GetByteCount(req.downloadHandler.text);
+                //Debug.Log($"{num}");
 
-                int featureCount = previewresponse.Features.Count;
+                //PreviewResponse previewresponse = PreviewResponse.DeserializePreviewResponse(JsonPreviewResponse);
 
-                foreach (var feature in previewresponse.Features)
-                {
-                    Debug.Log("Feature: " + $"{feature.name}" + "\t\tAvailable: " + $"{feature.count}" + "\t\tTotal: " + $"{feature.maxCount}" + "\t\tExpiration: " + $"{feature.expires.ToLongDateString()}");
-                }
-                
+                //int featureCount = previewresponse.Features.Count;
+
+                //foreach (var feature in previewresponse.Features)
+                //{
+                //    Debug.Log("Feature: " + $"{feature.name}" + "\t\tAvailable: " + $"{feature.count}" + "\t\tTotal: " + $"{feature.maxCount}" + "\t\tExpiration: " + $"{feature.expires.ToLongDateString()}");
+                //}
+
             }
         }));
     }

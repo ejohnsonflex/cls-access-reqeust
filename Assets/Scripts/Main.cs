@@ -4,23 +4,28 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Michsky.UI;
 
 public class Main : MonoBehaviour
 {
+    //public GameObject list = GameObject.FindGameObjectsWithTag("List");
+    //public GameObject newFeature;
+
     private const string path = @"Assets/config.dat";
+    [SerializeField] Text text = null;
 
     void Start()
     {
         ConfigDat.ConfigStart();
+        text.text = ConfigDat.URL;
 
         Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
-        //StartCoroutine(Communications.SetJson());
+        PreviewResponseDisplay displayPreviewResponse = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<PreviewResponseDisplay>();
 
-        //Communications.PreviewRequestSend(communicationsScript);
 
         StartCoroutine(PreviewRequestUpdate(communicationsScript));
+        StartCoroutine(PreviewResponseDisplay.PollPreviewResponseChange()); ;
 
-        //Debug.Log(Communications.JsonPreviewResponse);
     }
 
     IEnumerator PreviewRequestUpdate(Communications communicationsScript)
@@ -28,20 +33,7 @@ public class Main : MonoBehaviour
         while (true)
         {
             Communications.PreviewRequestSend(communicationsScript);
-            yield return new WaitForSeconds(10);
-
-            string temp = Communications.JsonPreviewResponse;
-            if (string.IsNullOrEmpty(temp))
-            {
-
-            }
-
-            else
-            {
-               Debug.Log($"{temp}");
-            }
+            yield return new WaitForSeconds(5);
         }
-
     }
-
 }

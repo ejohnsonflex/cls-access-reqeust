@@ -22,7 +22,7 @@ public class PreviewResponse
 
     public static PreviewResponse DeserializePreviewResponse(string jsonString)
     {
-        Text text = GameObject.FindGameObjectWithTag("Display").GetComponent<Text>();
+        //Text text = GameObject.FindGameObjectWithTag("Display").GetComponent<Text>();
 
         var previewResponse = new PreviewResponse();
         previewResponse = JsonConvert.DeserializeObject<PreviewResponse>(jsonString);
