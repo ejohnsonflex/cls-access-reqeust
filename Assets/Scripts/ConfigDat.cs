@@ -14,8 +14,8 @@ public class ConfigDat
     private readonly string path = "Assets/config.dat";
 
     private List<string> configDatList = new List<string>();
-    private List<string> configDaLeftParseList = new List<string>();
-    private List<string> configDatRightParseList = new List<string>();
+    private static List<string> configDaLeftParseList = new List<string>();
+    private static List<string> configDatRightParseList = new List<string>();
 
     public string Tenant { get; set; }
     public string UatProd { get; set; }
@@ -32,7 +32,7 @@ public class ConfigDat
     public List<Feature> Features { get; set; }
 
     public VendorDictionary VendorDictionary { get; set; }
-    public static SelectorsDictionary SelectorDicionary { get; set; }
+    public static string SelectorsDictionary { get; set; }
 
     public static string BearerToken { get; set; }
 
@@ -115,6 +115,7 @@ public class ConfigDat
                 ParseConfigDat();
                 ParseFeatureDat();
                 ParseVendorDictionaryDat();
+                SetSelectorsDictionary();
 
                 return true;
             }
@@ -141,11 +142,6 @@ public class ConfigDat
     private void ReadConfigData()
     {
         configDatList = File.ReadAllLines(path).ToList<string>();
-
-        /*foreach (var line in configDatList)
-        {
-            Debug.Log(line);
-        }*/
     }
 
     private void ParseConfigDat()
@@ -155,11 +151,6 @@ public class ConfigDat
             configDaLeftParseList.Add(line.Split('=').First().Trim());
             configDatRightParseList.Add(line.Split('=').Last().Trim());
         }
-    }
-
-    public static string ClsUrl ()
-    {
-        return "blah";
     }
 
     private List<Feature> ParseFeatureDat()
@@ -203,6 +194,16 @@ public class ConfigDat
 
         return num;
     }
+
+    private static void SetSelectorsDictionary()
+    {
+        if (configDaLeftParseList[14].Equals("selectorsDictionary"))
+        {
+            //Debug.Log($"{configDatRightParseList[14]}");
+            SelectorsDictionary = configDatRightParseList[14];
+        }
+    }
+
 
     public static void ConfigStart()
     {

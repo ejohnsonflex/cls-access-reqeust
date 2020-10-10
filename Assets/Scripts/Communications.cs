@@ -7,22 +7,21 @@ using UnityEngine.Networking;
 public class Communications : MonoBehaviour
 {
     public static string URI { get; set; }
-    public static string JsonPreviewRequest { get; set; }
     private const string Name = "Authorization";
+    private const string Bearer = "Bearer ";
 
     public Communications()
     {
         URI = ConfigDat.URL + "/preview_request";
-        JsonPreviewRequest = new PreviewRequest().SerializePreviewRequest(new PreviewRequest());
     }
 
-    public static IEnumerator NetworkManager(string URI, System.Action<UnityWebRequest> callback)
+    public static IEnumerator NetworkManager(string jsonPreviewRequest, System.Action<UnityWebRequest> callback)
     {
-        using (UnityWebRequest request = UnityWebRequest.Post(URI, JsonPreviewRequest))
+        using (UnityWebRequest request = UnityWebRequest.Post(URI, jsonPreviewRequest))
         {
             //Debug.Log($"{URI}");
             //Debug.Log($"{JsonPreviewRequest}");
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonPreviewRequest);
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPreviewRequest);
             //Debug.Log("Number of Byes in Request: "  + $"{System.Text.ASCIIEncoding.ASCII.GetByteCount(JsonPreviewRequest)}");
           
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -30,7 +29,7 @@ public class Communications : MonoBehaviour
             request.downloadHandler = new DownloadHandlerBuffer();
             request.timeout = -1;
             request.SetRequestHeader("Content-Type", "application/json");
-            request.SetRequestHeader(Name, "Bearer " + ConfigDat.BearerToken);
+            request.SetRequestHeader(Name, Bearer + ConfigDat.BearerToken);
 
             // Send the request and wait for a response
             yield return request.SendWebRequest();
@@ -38,31 +37,20 @@ public class Communications : MonoBehaviour
         }
     }
 
-    public static void PreviewRequestSend(Communications comms)
+    public static void SendPreviewRequest(Communications comms, string jsonPreviewRequest)
     {
-        comms.StartCoroutine(NetworkManager(URI, (UnityWebRequest req) =>
+        comms.StartCoroutine(NetworkManager(jsonPreviewRequest, (UnityWebRequest req) =>
         {
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.Log($"{req.error}: {req.downloadHandler.text}");
             }
 
+            // callback
             else
             {
                 PreviewResponseDisplay.JsonPreviewResponse = req.downloadHandler.text;
                 PreviewResponseDisplay.PreviewResponseBytes = Encoding.ASCII.GetByteCount(req.downloadHandler.text);
-
-                //int num = DisplayPreviewResponse.PreviewResponseBytes = Encoding.ASCII.GetByteCount(req.downloadHandler.text);
-                //Debug.Log($"{num}");
-
-                //PreviewResponse previewresponse = PreviewResponse.DeserializePreviewResponse(JsonPreviewResponse);
-
-                //int featureCount = previewresponse.Features.Count;
-
-                //foreach (var feature in previewresponse.Features)
-                //{
-                //    Debug.Log("Feature: " + $"{feature.name}" + "\t\tAvailable: " + $"{feature.count}" + "\t\tTotal: " + $"{feature.maxCount}" + "\t\tExpiration: " + $"{feature.expires.ToLongDateString()}");
-                //}
 
             }
         }));

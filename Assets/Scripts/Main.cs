@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using Michsky.UI;
+
 
 public class Main : MonoBehaviour
 {
@@ -22,17 +22,18 @@ public class Main : MonoBehaviour
         Communications communicationsScript = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<Communications>();
         PreviewResponseDisplay displayPreviewResponse = (GameObject.FindGameObjectWithTag("AppPanel")).AddComponent<PreviewResponseDisplay>();
 
-
-        StartCoroutine(PreviewRequestUpdate(communicationsScript));
+        StartCoroutine(PreviewRequestManager(communicationsScript));
         StartCoroutine(PreviewResponseDisplay.PollPreviewResponseChange()); ;
-
     }
 
-    IEnumerator PreviewRequestUpdate(Communications communicationsScript)
+    IEnumerator PreviewRequestManager(Communications communicationsScript)
     {
+        var jsonPreviewRequest = new PreviewRequest().SerializePreviewRequest(new PreviewRequest());
+        PreviewRequest.InjectSelectorsDictionary(jsonPreviewRequest);
+
         while (true)
         {
-            Communications.PreviewRequestSend(communicationsScript);
+            Communications.SendPreviewRequest(communicationsScript, jsonPreviewRequest);
             yield return new WaitForSeconds(5);
         }
     }
